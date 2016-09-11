@@ -7,6 +7,8 @@ public interface CrudDao<T> {
 	public boolean create(T t);
 
 	public List<T> findAll();
+	
+	public List<T> findByName(T t);
 
 	public T update(T t);
 	

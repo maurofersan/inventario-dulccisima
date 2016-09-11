@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -30,10 +31,15 @@ public class InventarioView {
 	private JTextField txtPrecio;
 	private JLabel lblStock;
 	private JTextField txtStock;
+	private JButton btnCreate;
+	private JButton btnBuscar;
+	private JButton btnLimpiarBusqueda;
+	private JButton btnUpdate;
 
 	private DefaultTableModel tableModel;
 	private JTable tblProductos;
 	private JScrollPane scrollPane;
+	private JButton btnDelete;
 
 	private ProductoBusiness productoBusiness = new ProductoBusiness();
 
@@ -62,15 +68,16 @@ public class InventarioView {
 
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(100, 100, 650, 500);
+		frame.setBounds(100, 100, 658, 540);
 		frame.setTitle("MANTENIMIENTO DE INVENTARIO");
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 		frame.setIconImage(
 				new ImageIcon(this.getClass().getClassLoader().getResource("img/inventario04.png")).getImage());
 
 		panel = new JPanel();
-		panel.setBounds(0, 0, 634, 462);
+		panel.setBounds(0, 0, 652, 512);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -79,16 +86,17 @@ public class InventarioView {
 		panel.add(lblCodigo);
 
 		txtCodigo = new JTextField();
-		txtCodigo.setBounds(53, 19, 86, 20);
+		txtCodigo.setBounds(53, 19, 61, 20);
+		txtCodigo.setEditable(false);
 		panel.add(txtCodigo);
 		txtCodigo.setColumns(10);
 
 		JLabel lblNombre = new JLabel("Nombre: ");
-		lblNombre.setBounds(149, 22, 61, 14);
+		lblNombre.setBounds(124, 22, 72, 14);
 		panel.add(lblNombre);
 
 		txtNombre = new JTextField();
-		txtNombre.setBounds(206, 19, 86, 20);
+		txtNombre.setBounds(186, 19, 95, 20);
 		panel.add(txtNombre);
 		txtNombre.setColumns(10);
 
@@ -110,9 +118,9 @@ public class InventarioView {
 		panel.add(txtStock);
 		txtStock.setColumns(10);
 		// CREAR-----------------------------------------------------------------------------------------------------------
-		JButton btnCreate = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/new.png")));
+		btnCreate = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/new.png")));
 		btnCreate.setToolTipText("Crear");
-		btnCreate.setBounds(53, 50, 46, 33);
+		btnCreate.setBounds(206, 458, 46, 33);
 		btnCreate.addActionListener(new ActionListener() {
 
 			@Override
@@ -128,14 +136,39 @@ public class InventarioView {
 		});
 		panel.add(btnCreate);
 		// BUSCAR-----------------------------------------------------------------------------------------------------------
-		JButton btnBuscar = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/buscar.gif")));
+		btnBuscar = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/buscar.gif")));
 		btnBuscar.setToolTipText("Buscar");
-		btnBuscar.setBounds(128, 50, 46, 33);
+		btnBuscar.setBounds(122, 50, 46, 33);
+		btnBuscar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<Producto> productosFound = productoBusiness.findByName(txtNombre.getText());
+				if (productosFound.isEmpty()) {
+					JOptionPane.showMessageDialog(frame, "No se encontraron productos", "Warning", JOptionPane.WARNING_MESSAGE);
+				}
+				limpiarDatos();
+				cargarProductosFound(productosFound);
+
+			}
+		});
 		panel.add(btnBuscar);
+
+		btnLimpiarBusqueda = new JButton("Limpiar busqueda");
+		btnLimpiarBusqueda.setBounds(216, 50, 151, 33);
+		btnLimpiarBusqueda.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				limpiarDatos();
+				cargarProductos();
+			}
+		});
+		panel.add(btnLimpiarBusqueda);
 		// ACTUALIZAR-------------------------------------------------------------------------------------------------------
-		JButton btnUpdate = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/edit.png")));
+		btnUpdate = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/edit.png")));
 		btnUpdate.setToolTipText("Actualizar");
-		btnUpdate.setBounds(206, 50, 46, 33);
+		btnUpdate.setBounds(299, 458, 46, 33);
 		btnUpdate.addActionListener(new ActionListener() {
 
 			@Override
@@ -152,17 +185,21 @@ public class InventarioView {
 		});
 		panel.add(btnUpdate);
 		// ELIMINAR-------------------------------------------------------------------------------------------------------
-		JButton btnDelete = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/delete.png")));
+		btnDelete = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/delete.png")));
 		btnDelete.setToolTipText("Eliminar");
-		btnDelete.setBounds(279, 50, 46, 33);
+		btnDelete.setBounds(390, 458, 46, 33);
 		btnDelete.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				int value = JOptionPane.showConfirmDialog(frame, "Desea eliminar este producto", "Warning", JOptionPane.WARNING_MESSAGE);
+				if(value == JOptionPane.CANCEL_OPTION){
+					return;
+				}
 				productoBusiness.delate(Integer.parseInt(txtCodigo.getText()));
 				limpiarDatos();
 				cargarProductos();
-				
+
 			}
 		});
 		panel.add(btnDelete);
@@ -171,7 +208,7 @@ public class InventarioView {
 
 		boolean canEdit = false;
 		tableModel = new DefaultTableModel(columnNames, 0) {
-			
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -186,8 +223,9 @@ public class InventarioView {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) {
-//					System.out.println("getValueIsAdjusting estas en : " + e.getValueIsAdjusting());
-//					System.out.println(tblProductos.getSelectedRow());
+					// System.out.println("getValueIsAdjusting estas en : " +
+					// e.getValueIsAdjusting());
+					// System.out.println(tblProductos.getSelectedRow());
 					int selectedRow = tblProductos.getSelectedRow();
 					Integer codigo = (Integer) tblProductos.getValueAt(selectedRow, 0);
 					String nombre = (String) tblProductos.getValueAt(selectedRow, 1);
@@ -204,7 +242,7 @@ public class InventarioView {
 		});
 
 		scrollPane = new JScrollPane(tblProductos);
-		scrollPane.setBounds(10, 110, 610, 320);
+		scrollPane.setBounds(10, 110, 632, 320);
 		panel.add(scrollPane);
 
 	}
@@ -214,7 +252,6 @@ public class InventarioView {
 		txtNombre.setText("");
 		txtPrecio.setText("");
 		txtStock.setText("");
-
 		int rowCount = tableModel.getRowCount();
 
 		for (int i = rowCount - 1; i >= 0; i--) {
@@ -232,6 +269,16 @@ public class InventarioView {
 					producto.getStock() };
 
 			tableModel.addRow(rowProducto);
+		}
+	}
+
+	private void cargarProductosFound(List<Producto> productos) {
+		Object[] rowProducto;
+		for (Producto producto : productos) {
+			rowProducto = new Object[] { producto.getCodigo(), producto.getNombre(), producto.getPrecio(),
+					producto.getStock() };
+			tableModel.addRow(rowProducto);
+
 		}
 	}
 }

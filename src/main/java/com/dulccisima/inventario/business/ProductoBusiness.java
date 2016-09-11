@@ -17,6 +17,12 @@ public class ProductoBusiness {
 		return productoDao.findAll();
 	}
 	
+	public List<Producto> findByName(String nombre) {
+		Producto producto = new Producto();
+		producto.setNombre(nombre);
+		return productoDao.findByName(producto);
+	}
+	
 	public Producto update(Producto p) {
 		return productoDao.update(p);
 	}

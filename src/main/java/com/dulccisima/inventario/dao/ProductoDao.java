@@ -1,5 +1,6 @@
 package com.dulccisima.inventario.dao;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +18,17 @@ public class ProductoDao implements CrudDao<Producto>{
 	@Override
 	public List<Producto> findAll() {
 		return DataBase.getProductos();
+	}
+	
+	@Override
+	public List<Producto> findByName(Producto p) {
+		List<Producto> productosFound = new ArrayList<>();
+		for (Producto producto : findAll()) {
+			if (producto.getNombre().toLowerCase().contains(p.getNombre().toLowerCase())) {
+				productosFound.add(producto);
+			}
+		}
+		return productosFound;
 	}
 
 	@Override
