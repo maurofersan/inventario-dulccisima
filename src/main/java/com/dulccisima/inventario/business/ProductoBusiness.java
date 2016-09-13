@@ -7,7 +7,7 @@ import com.dulccisima.inventario.model.Producto;
 
 public class ProductoBusiness {
 	
-	ProductoDao productoDao = new ProductoDao();
+	private ProductoDao productoDao = new ProductoDao();
 	
 	public boolean create(Producto p) {
 		return productoDao.create(p);

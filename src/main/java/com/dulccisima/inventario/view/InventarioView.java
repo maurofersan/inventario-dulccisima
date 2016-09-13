@@ -24,7 +24,7 @@ import javax.swing.JTable;
 
 public class InventarioView {
 
-	private JFrame frame;
+	protected JFrame frame;
 	private JPanel panel;
 	private JTextField txtCodigo;
 	private JTextField txtNombre;
@@ -155,7 +155,8 @@ public class InventarioView {
 		panel.add(btnBuscar);
 
 		btnLimpiarBusqueda = new JButton("Limpiar busqueda");
-		btnLimpiarBusqueda.setBounds(216, 50, 151, 33);
+		btnLimpiarBusqueda.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/clear.png")));
+		btnLimpiarBusqueda.setBounds(217, 50, 177, 33);
 		btnLimpiarBusqueda.addActionListener(new ActionListener() {
 
 			@Override

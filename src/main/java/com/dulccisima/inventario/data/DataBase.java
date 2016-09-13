@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dulccisima.inventario.model.Producto;
+import com.dulccisima.inventario.model.Usuario;
 
 public final class DataBase {
 
@@ -11,9 +12,11 @@ public final class DataBase {
 	}
 
 	private static final List<Producto> PRODUCTOS = new ArrayList<>();
+	private static final List<Usuario> USUARIOS = new ArrayList<>();
 
 	static {
 		cargarProductos();
+		cargarUsuarios();
 	}
 
 	private static void cargarProductos() {
@@ -53,11 +56,24 @@ public final class DataBase {
 		PRODUCTOS.add(guarana);
 		PRODUCTOS.add(aceiteCocinero);
 		PRODUCTOS.add(aceitePrimor);
+	}
+	
+	private static void cargarUsuarios(){
 		
-
+		Usuario usuario1 = new Usuario();
+		usuario1.setNombre("Mauro Fernandez");
+		usuario1.setCodigo(1);
+		usuario1.setEmail("mauro@gmail.com");
+		usuario1.setContrasenia("contra");
+		
+		USUARIOS.add(usuario1);
 	}
 
 	public static List<Producto> getProductos() {
 		return PRODUCTOS;
+	}
+	
+	public static List<Usuario> getUsuarios() {
+		return USUARIOS;
 	}
 }
