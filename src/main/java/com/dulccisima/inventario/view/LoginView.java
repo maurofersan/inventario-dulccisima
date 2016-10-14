@@ -53,6 +53,7 @@ public class LoginView {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(100, 100, 507, 404);
 		frame.setLocationRelativeTo(null);
+		frame.setResizable(false);
 		frame.setIconImage(new ImageIcon(this.getClass().getClassLoader().getResource("img/inventario04.png")).getImage());
 		frame.getContentPane().setLayout(null);
 
@@ -114,7 +115,7 @@ public class LoginView {
 		String mail = txtEmail.getText();
 
 		if (usuarioBusiness.login(mail, contra)) {
-			InventarioView window = new InventarioView();
+			FormularioMDI window = new FormularioMDI();
 			window.frame.setVisible(true);
 			this.frame.dispose();
 		} else {

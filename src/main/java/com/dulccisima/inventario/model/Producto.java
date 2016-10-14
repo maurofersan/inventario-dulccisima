@@ -1,11 +1,24 @@
 package com.dulccisima.inventario.model;
 
-public class Producto implements Comparable<Producto>{
+public class Producto implements Comparable<Producto> {
 
 	private int codigo;
 	private String nombre;
 	private double precio;
+	private String categoria;
 	private int stock;
+
+	public Producto() {
+		super();
+	}
+
+	public Producto(int codigo, String nombre, double precio, String categoria, int stock) {
+		this.codigo = codigo;
+		this.nombre = nombre;
+		this.precio = precio;
+		this.stock = stock;
+		this.categoria = categoria;
+	}
 
 	public int getCodigo() {
 		return codigo;
@@ -29,6 +42,14 @@ public class Producto implements Comparable<Producto>{
 
 	public void setPrecio(double precio) {
 		this.precio = precio;
+	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 
 	public int getStock() {
@@ -63,6 +84,5 @@ public class Producto implements Comparable<Producto>{
 
 		return getCodigo() - o.getCodigo();
 	}
-	
-	
+
 }

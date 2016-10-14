@@ -24,6 +24,8 @@ import javax.swing.JTable;
 
 public class InventarioView {
 
+	private static InventarioView instance;
+	
 	protected JFrame frame;
 	private JPanel panel;
 	private JTextField txtCodigo;
@@ -31,6 +33,8 @@ public class InventarioView {
 	private JTextField txtPrecio;
 	private JLabel lblStock;
 	private JTextField txtStock;
+	private JLabel lblCategoria;
+	private JTextField txtCategoria;
 	private JButton btnCreate;
 	private JButton btnBuscar;
 	private JButton btnLimpiarBusqueda;
@@ -43,9 +47,6 @@ public class InventarioView {
 
 	private ProductoBusiness productoBusiness = new ProductoBusiness();
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -58,6 +59,13 @@ public class InventarioView {
 			}
 		});
 	}
+	
+	public static InventarioView getInstance() {
+		if(instance == null) {
+			instance = new InventarioView();
+		}
+		return instance;
+	}
 
 	public InventarioView() {
 		initialize();
@@ -67,8 +75,7 @@ public class InventarioView {
 	private void initialize() {
 
 		frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(100, 100, 658, 540);
+		frame.setBounds(100, 100, 760, 540);
 		frame.setTitle("MANTENIMIENTO DE INVENTARIO");
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
@@ -77,50 +84,59 @@ public class InventarioView {
 				new ImageIcon(this.getClass().getClassLoader().getResource("img/inventario04.png")).getImage());
 
 		panel = new JPanel();
-		panel.setBounds(0, 0, 652, 512);
+		panel.setBounds(0, 0, 754, 512);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
 		JLabel lblCodigo = new JLabel("C\u00f3digo: ");
-		lblCodigo.setBounds(10, 22, 46, 14);
+		lblCodigo.setBounds(10, 59, 46, 14);
 		panel.add(lblCodigo);
 
 		txtCodigo = new JTextField();
-		txtCodigo.setBounds(53, 19, 61, 20);
+		txtCodigo.setBounds(51, 56, 61, 20);
 		txtCodigo.setEditable(false);
 		panel.add(txtCodigo);
 		txtCodigo.setColumns(10);
 
 		JLabel lblNombre = new JLabel("Nombre: ");
-		lblNombre.setBounds(124, 22, 72, 14);
+		lblNombre.setBounds(10, 22, 72, 14);
 		panel.add(lblNombre);
 
 		txtNombre = new JTextField();
-		txtNombre.setBounds(186, 19, 95, 20);
+		txtNombre.setBounds(73, 19, 95, 20);
 		panel.add(txtNombre);
 		txtNombre.setColumns(10);
 
 		JLabel lblPrecio = new JLabel("Precio: ");
-		lblPrecio.setBounds(316, 22, 46, 14);
+		lblPrecio.setBounds(154, 59, 46, 14);
 		panel.add(lblPrecio);
 
 		txtPrecio = new JTextField();
-		txtPrecio.setBounds(365, 19, 86, 20);
+		txtPrecio.setBounds(210, 56, 86, 20);
 		panel.add(txtPrecio);
 		txtPrecio.setColumns(10);
+		
+		lblCategoria = new JLabel("Categoria:");
+		lblCategoria.setBounds(352, 59, 61, 14);
+		panel.add(lblCategoria);
+		
+		txtCategoria = new JTextField();
+		txtCategoria.setBounds(427, 56, 86, 20);
+		panel.add(txtCategoria);
+		txtCategoria.setColumns(10);
 
 		lblStock = new JLabel("Stock: ");
-		lblStock.setBounds(461, 22, 46, 14);
+		lblStock.setBounds(569, 59, 46, 14);
 		panel.add(lblStock);
 
 		txtStock = new JTextField();
-		txtStock.setBounds(506, 19, 86, 20);
+		txtStock.setBounds(625, 56, 86, 20);
 		panel.add(txtStock);
 		txtStock.setColumns(10);
 		// CREAR-----------------------------------------------------------------------------------------------------------
 		btnCreate = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/new.png")));
 		btnCreate.setToolTipText("Crear");
-		btnCreate.setBounds(206, 458, 46, 33);
+		btnCreate.setBounds(206, 93, 46, 33);
 		btnCreate.addActionListener(new ActionListener() {
 
 			@Override
@@ -128,6 +144,7 @@ public class InventarioView {
 				Producto producto = new Producto();
 				producto.setNombre(txtNombre.getText());
 				producto.setPrecio(Double.parseDouble(txtPrecio.getText()));
+				producto.setCategoria(txtCategoria.getText());
 				producto.setStock(Integer.parseInt(txtStock.getText()));
 				productoBusiness.create(producto);
 				limpiarDatos();
@@ -138,7 +155,7 @@ public class InventarioView {
 		// BUSCAR-----------------------------------------------------------------------------------------------------------
 		btnBuscar = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/buscar.gif")));
 		btnBuscar.setToolTipText("Buscar");
-		btnBuscar.setBounds(122, 50, 46, 33);
+		btnBuscar.setBounds(206, 11, 46, 33);
 		btnBuscar.addActionListener(new ActionListener() {
 
 			@Override
@@ -156,7 +173,7 @@ public class InventarioView {
 
 		btnLimpiarBusqueda = new JButton("Limpiar busqueda");
 		btnLimpiarBusqueda.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/clear.png")));
-		btnLimpiarBusqueda.setBounds(217, 50, 177, 33);
+		btnLimpiarBusqueda.setBounds(286, 13, 177, 33);
 		btnLimpiarBusqueda.addActionListener(new ActionListener() {
 
 			@Override
@@ -169,26 +186,32 @@ public class InventarioView {
 		// ACTUALIZAR-------------------------------------------------------------------------------------------------------
 		btnUpdate = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/edit.png")));
 		btnUpdate.setToolTipText("Actualizar");
-		btnUpdate.setBounds(299, 458, 46, 33);
+		btnUpdate.setBounds(346, 93, 46, 33);
 		btnUpdate.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Producto producto = new Producto();
+				EditarProductoView view = new EditarProductoView();
 				producto.setCodigo(Integer.parseInt(txtCodigo.getText()));
 				producto.setNombre(txtNombre.getText());
 				producto.setPrecio(Double.parseDouble(txtPrecio.getText()));
+				producto.setCategoria(txtCategoria.getText());
 				producto.setStock(Integer.parseInt(txtStock.getText()));
-				productoBusiness.update(producto);
-				limpiarDatos();
-				cargarProductos();
+				view.setBean(producto);
+				
+				view.frame.setVisible(true);
+				
+//				productoBusiness.update(producto);
+//				limpiarDatos();
+//				cargarProductos();
 			}
 		});
 		panel.add(btnUpdate);
 		// ELIMINAR-------------------------------------------------------------------------------------------------------
 		btnDelete = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/delete.png")));
 		btnDelete.setToolTipText("Eliminar");
-		btnDelete.setBounds(390, 458, 46, 33);
+		btnDelete.setBounds(467, 93, 46, 33);
 		btnDelete.addActionListener(new ActionListener() {
 
 			@Override
@@ -205,7 +228,7 @@ public class InventarioView {
 		});
 		panel.add(btnDelete);
 		// -------------------------------------------------------------------------------------------------------------
-		Object[] columnNames = new Object[] { "Codigo", "Nombre", "Precio", "Stock" };
+		Object[] columnNames = new Object[] { "Codigo", "Nombre", "Precio","Categoria", "Stock" };
 
 		boolean canEdit = false;
 		tableModel = new DefaultTableModel(columnNames, 0) {
@@ -231,11 +254,13 @@ public class InventarioView {
 					Integer codigo = (Integer) tblProductos.getValueAt(selectedRow, 0);
 					String nombre = (String) tblProductos.getValueAt(selectedRow, 1);
 					Double precio = (Double) tblProductos.getValueAt(selectedRow, 2);
-					Integer stock = (Integer) tblProductos.getValueAt(selectedRow, 3);
+					String categoria = (String) tblProductos.getValueAt(selectedRow, 3);
+					Integer stock = (Integer) tblProductos.getValueAt(selectedRow, 4);
 
 					txtCodigo.setText(codigo.toString());
 					txtNombre.setText(nombre);
 					txtPrecio.setText(precio.toString());
+					txtCategoria.setText(categoria);
 					txtStock.setText(stock.toString());
 
 				}
@@ -243,7 +268,7 @@ public class InventarioView {
 		});
 
 		scrollPane = new JScrollPane(tblProductos);
-		scrollPane.setBounds(10, 110, 632, 320);
+		scrollPane.setBounds(10, 137, 734, 364);
 		panel.add(scrollPane);
 
 	}
@@ -252,6 +277,7 @@ public class InventarioView {
 		txtCodigo.setText("");
 		txtNombre.setText("");
 		txtPrecio.setText("");
+		txtCategoria.setText("");
 		txtStock.setText("");
 		int rowCount = tableModel.getRowCount();
 
@@ -266,7 +292,7 @@ public class InventarioView {
 		Object[] rowProducto;
 
 		for (Producto producto : productos) {
-			rowProducto = new Object[] { producto.getCodigo(), producto.getNombre(), producto.getPrecio(),
+			rowProducto = new Object[] { producto.getCodigo(), producto.getNombre(), producto.getPrecio(),producto.getCategoria(),
 					producto.getStock() };
 
 			tableModel.addRow(rowProducto);
@@ -276,7 +302,7 @@ public class InventarioView {
 	private void cargarProductosFound(List<Producto> productos) {
 		Object[] rowProducto;
 		for (Producto producto : productos) {
-			rowProducto = new Object[] { producto.getCodigo(), producto.getNombre(), producto.getPrecio(),
+			rowProducto = new Object[] { producto.getCodigo(), producto.getNombre(), producto.getPrecio(), producto.getCategoria(),
 					producto.getStock() };
 			tableModel.addRow(rowProducto);
 
