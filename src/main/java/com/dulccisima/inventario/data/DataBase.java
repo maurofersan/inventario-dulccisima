@@ -54,7 +54,7 @@ public final class DataBase {
 		Producto lecheIdeal = new Producto(31,"Lecha Ideal",3.5,"Leche",28);
 		Producto lechePuravida = new Producto(32,"Leche Pura Vida",4.00,"Leche",18);
 		Producto lecheBellaholandesa = new Producto(33,"leche Bella Holandesa",3.90,"Leche",23);
-		Producto saladoEmpanada  = new Producto(34,"Empanadita de Pollo",0.50,"Salados",59);
+		Producto saladoEmpanada  = new Producto(34,"Empanadita de Pollo",1.50,"Salados",59);
 		Producto saladoEnrrollado = new Producto(35,"Enrrollado de Hot dog",0.50,"Salados",35);
 		Producto saladoPetipanes = new Producto(36,"Petipanes de pollo",0.65,"Salados",45);
 		Producto saladoTequeños = new Producto(37,"Tequeños salsa de guacamole",0.50,"Salados",62);
@@ -67,7 +67,6 @@ public final class DataBase {
 		PRODUCTOS.add(gaseosaKR);
 		PRODUCTOS.add(guarana);
 		PRODUCTOS.add(aceiteCocinero);
-		PRODUCTOS.add(aceitePrimor);
 		PRODUCTOS.add(aceitePrimor);
 		PRODUCTOS.add(tortaChocolate);
 		PRODUCTOS.add(tortaFresa);
@@ -109,9 +108,9 @@ public final class DataBase {
 	private static void cargarUsuarios(){
 		
 		Usuario usuario1 = new Usuario();
-		usuario1.setNombre("Mauro Fernandez");
+		usuario1.setNombre("Marita Sanchez");
 		usuario1.setCodigo(1);
-		usuario1.setEmail("mauro@gmail.com");
+		usuario1.setEmail("marita@gmail.com");
 		usuario1.setContrasenia("contra");
 		
 		USUARIOS.add(usuario1);

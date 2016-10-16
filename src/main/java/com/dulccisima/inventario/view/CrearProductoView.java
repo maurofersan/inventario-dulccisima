@@ -2,6 +2,8 @@ package com.dulccisima.inventario.view;
 
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -10,10 +12,7 @@ import com.dulccisima.inventario.business.ProductoBusiness;
 import com.dulccisima.inventario.model.Producto;
 import com.dulccisima.inventario.view.callback.SimpleCallback;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-
-public class EditarProductoView {
+public class CrearProductoView {
 
 	protected JFrame frame;
 	private JTextField txtCodigo;
@@ -23,7 +22,7 @@ public class EditarProductoView {
 	private JTextField txtStock;
 	private JButton btnProcesar;
 	private JButton btnCancelar;
-	private SimpleCallback onAccept;
+	private SimpleCallback callback;
 
 	private ProductoBusiness productoBusiness = new ProductoBusiness();
 
@@ -31,7 +30,7 @@ public class EditarProductoView {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EditarProductoView window = new EditarProductoView();
+					CrearProductoView window = new CrearProductoView();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,16 +39,16 @@ public class EditarProductoView {
 		});
 	}
 
-	public EditarProductoView() {
+	public CrearProductoView() {
 		initialize();
 	}
 
 	private void initialize() {
-		frame = new JFrame("EDITAR PRODUCTO");
+		frame = new JFrame("CREAR PRODUCTO");
 		frame.setBounds(100, 100, 400, 480);
-		frame.setLocationRelativeTo(null);
 		frame.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("img/inventario04.png")).getImage());
 		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 
 		JLabel lblCodigo = new JLabel("Codigo:");
@@ -101,21 +100,20 @@ public class EditarProductoView {
 		btnProcesar = new JButton("Procesar");
 		btnProcesar.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/save.png")));
 		btnProcesar.setBounds(51, 344, 123, 33);
-		// ACTUALIZAR-----------------------------------------------------------------------------
+		// CREATE-----------------------------------------------------------------------------
 		btnProcesar.addActionListener(e -> {
 			Producto producto = new Producto();
-			producto.setCodigo(Integer.parseInt(txtCodigo.getText()));
 			producto.setNombre(txtNombre.getText());
 			producto.setPrecio(Double.parseDouble(txtPrecio.getText()));
 			producto.setCategoria(txtCategoria.getText());
 			producto.setStock(Integer.parseInt(txtStock.getText()));
-			productoBusiness.update(producto);
-
-			if (onAccept != null) {
-				onAccept.execute();
+			productoBusiness.create(producto);
+			if (callback != null) {
+				callback.execute();
 			}
 
 			frame.dispose();
+
 		});
 
 		frame.getContentPane().add(btnProcesar);
@@ -129,21 +127,8 @@ public class EditarProductoView {
 		frame.getContentPane().add(btnCancelar);
 	}
 
-	/**
-	 * 
-	 * @param bean
-	 *            : Datos del producto a editar
-	 */
-	public void setBean(Producto bean) {
-		txtCodigo.setText(String.valueOf(bean.getCodigo()));
-		txtNombre.setText(bean.getNombre());
-		txtPrecio.setText(String.valueOf(bean.getPrecio()));
-		txtCategoria.setText(bean.getCategoria());
-		txtStock.setText(String.valueOf(bean.getStock()));
-
+	public void setCallback(SimpleCallback callback) {
+		this.callback = callback;
 	}
 
-	public void setOnAccept(SimpleCallback onAccept) {
-		this.onAccept = onAccept;
-	}
 }

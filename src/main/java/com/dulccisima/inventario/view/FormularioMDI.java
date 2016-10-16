@@ -84,10 +84,9 @@ public class FormularioMDI {
 		menuMantenimiento = new JMenu("Mantenimiento");
 		menuMantenimiento.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/skills.png")));
 		menuBar.add(menuMantenimiento);
-		
+
 		menuItemInventario = new JMenuItem("Sistema Inventario");
 		menuItemInventario.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				InventarioView window = InventarioView.getInstance();

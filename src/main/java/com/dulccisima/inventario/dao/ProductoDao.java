@@ -26,6 +26,7 @@ public class ProductoDao implements CrudDao<Producto> {
 		List<Producto> productosFound = new ArrayList<>();
 		for (Producto producto : findAll()) {
 			if (containsIgnoreCase(producto.getNombre(), p.getNombre())) {
+//			if (producto.getNombre().toLowerCase().contains(p.getNombre().toLowerCase())) {
 				productosFound.add(producto);
 			}
 		}
