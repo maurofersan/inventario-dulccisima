@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.dulccisima.inventario.data.DataBase;
 import com.dulccisima.inventario.model.Producto;
-import static com.mauro.utilitario.util.StringUtil1.containsIgnoreCase;;
+import static com.mauro.utilitario.util.StringUtil.containsIgnoreCase;;
 
 public class ProductoDao implements CrudDao<Producto> {
 
@@ -32,14 +32,25 @@ public class ProductoDao implements CrudDao<Producto> {
 		}
 		return productosFound;
 	}
-
+	
 	@Override
-	public Producto update(Producto p) {
-		int index = DataBase.getProductos().indexOf(p);
+	public Producto findByCodigo(int codigo) {
+		Producto producto = new Producto();
+		producto.setCodigo(codigo);
+		int index = DataBase.getProductos().indexOf(producto);
 		if (index == -1) {
 			return null;
 		}
-		return DataBase.getProductos().set(index, p);
+		return DataBase.getProductos().get(index);
+	}
+
+	@Override
+	public Producto update(Producto producto) {
+		int index = DataBase.getProductos().indexOf(producto);
+		if (index == -1) {
+			return null;
+		}
+		return DataBase.getProductos().set(index, producto);
 	}
 
 	@Override

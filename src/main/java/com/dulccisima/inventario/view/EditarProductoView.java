@@ -4,11 +4,13 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.dulccisima.inventario.business.ProductoBusiness;
 import com.dulccisima.inventario.model.Producto;
 import com.dulccisima.inventario.view.callback.SimpleCallback;
+import com.mauro.utilitario.util.ConvertUtil;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,7 +25,8 @@ public class EditarProductoView {
 	private JTextField txtStock;
 	private JButton btnProcesar;
 	private JButton btnCancelar;
-	private SimpleCallback onAccept;
+	private SimpleCallback onAccept;	
+	private Producto producto;
 
 	private ProductoBusiness productoBusiness = new ProductoBusiness();
 
@@ -103,13 +106,25 @@ public class EditarProductoView {
 		btnProcesar.setBounds(51, 344, 123, 33);
 		// ACTUALIZAR-----------------------------------------------------------------------------
 		btnProcesar.addActionListener(e -> {
+			
+			if (!validarDatos()) {
+				return;
+			}
+			
 			Producto producto = new Producto();
-			producto.setCodigo(Integer.parseInt(txtCodigo.getText()));
+			producto.setCodigo(ConvertUtil.toInteger(txtCodigo.getText()));
 			producto.setNombre(txtNombre.getText());
 			producto.setPrecio(Double.parseDouble(txtPrecio.getText()));
 			producto.setCategoria(txtCategoria.getText());
 			producto.setStock(Integer.parseInt(txtStock.getText()));
-			productoBusiness.update(producto);
+
+			boolean esCrear = EditarProductoView.this.producto == null;
+			
+			if (esCrear) {
+				productoBusiness.create(producto);
+			} else {
+				productoBusiness.update(producto);
+			}
 
 			if (onAccept != null) {
 				onAccept.execute();
@@ -129,21 +144,42 @@ public class EditarProductoView {
 		frame.getContentPane().add(btnCancelar);
 	}
 
-	/**
-	 * 
-	 * @param bean
-	 *            : Datos del producto a editar
-	 */
-	public void setBean(Producto bean) {
-		txtCodigo.setText(String.valueOf(bean.getCodigo()));
-		txtNombre.setText(bean.getNombre());
-		txtPrecio.setText(String.valueOf(bean.getPrecio()));
-		txtCategoria.setText(bean.getCategoria());
-		txtStock.setText(String.valueOf(bean.getStock()));
+	private boolean validarDatos() {
+		String precio = txtPrecio.getText();
+		String stock = txtStock.getText();
+		if (precio.isEmpty()) {
+			JOptionPane.showMessageDialog(frame, "Ingrese un precio");
+			return false;
+		}
+		if (ConvertUtil.toDouble(precio) == null) {
+			JOptionPane.showMessageDialog(frame, "Precio invalido");
+			return false;
+		}
+		if (stock.isEmpty()) {
+			JOptionPane.showMessageDialog(frame, "Ingrese stock");
+			return false;
+		}
+		if (ConvertUtil.toInteger(stock) == null) {
+			JOptionPane.showMessageDialog(frame, "Stock invalido");
+			return false;
+		}
+		
+		return true;
+	}
 
+	public void cargarDatos() {
+		txtCodigo.setText(String.valueOf(producto.getCodigo()));
+		txtNombre.setText(producto.getNombre());
+		txtPrecio.setText(String.valueOf(producto.getPrecio()));
+		txtCategoria.setText(producto.getCategoria());
+		txtStock.setText(String.valueOf(producto.getStock()));
 	}
 
 	public void setOnAccept(SimpleCallback onAccept) {
 		this.onAccept = onAccept;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 }

@@ -46,4 +46,10 @@ public class UsuarioDao implements CrudDao<Usuario> {
 		return false;
 	}
 
+	@Override
+	public Usuario findByCodigo(int codigo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

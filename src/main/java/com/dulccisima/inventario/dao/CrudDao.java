@@ -9,6 +9,8 @@ public interface CrudDao<T> {
 	public List<T> findAll();
 	
 	public List<T> findByName(T t);
+	
+	public T findByCodigo(int codigo);
 
 	public T update(T t);
 	

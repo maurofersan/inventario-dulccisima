@@ -24,6 +24,7 @@ public class FormularioMDI {
 	private JMenu menuMantenimiento;
 	private JMenuItem menuItemInventario;
 	private JMenu menuVenta;
+	private JMenuItem menuItemVenta;
 	private JMenu menuCliente;
 	private JMenu menuReporte;
 	private JMenu menuConsulta;
@@ -98,6 +99,17 @@ public class FormularioMDI {
 		menuVenta = new JMenu("Venta");
 		menuVenta.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/venta.png")));
 		menuBar.add(menuVenta);
+		
+		menuItemVenta = new JMenuItem("Registrar Venta");
+		menuItemVenta.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		menuVenta.add(menuItemVenta);
 		
 		menuCliente = new JMenu("Cliente");
 		menuCliente.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/People.png")));

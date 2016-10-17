@@ -130,9 +130,9 @@ public class InventarioView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CrearProductoView view = new CrearProductoView();
-				view.frame.setVisible(true);
-				view.setCallback(new SimpleCallback() {
+				EditarProductoView view = new EditarProductoView();
+				view.frame.setTitle("CREAR PRODUCTO");
+				view.setOnAccept(new SimpleCallback() {
 					@Override
 					public void execute() {
 						
@@ -141,6 +141,7 @@ public class InventarioView {
 						
 					}
 				});
+				view.frame.setVisible(true);
 			}
 		});
 		panel.add(btnCreate);
@@ -191,16 +192,16 @@ public class InventarioView {
 				producto.setStock(Integer.parseInt(txtStock.getText()));	
 				
 				EditarProductoView view = new EditarProductoView();
-				view.setBean(producto);
+				view.frame.setTitle("EDITAR PRODUCTO");
+				view.setProducto(producto);
+				view.cargarDatos();
 				view.setOnAccept(new SimpleCallback() {
-					
 					@Override
 					public void execute() {
 						limpiarDatos();
 						cargarProductos();
 					}
 				});
-				
 				view.frame.setVisible(true);
 			}
 		});
