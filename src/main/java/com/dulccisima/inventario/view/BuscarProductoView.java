@@ -136,6 +136,7 @@ public class BuscarProductoView {
 				if (onAccept != null) {
 					onAccept.execute();
 				}
+				frame.dispose();
 			}
 		});
 		panel.add(btnAceptar);
@@ -153,8 +154,7 @@ public class BuscarProductoView {
 				if (e.getValueIsAdjusting()) {
 					int selectedRow = table.getSelectedRow();
 					Integer codigo = (Integer) table.getValueAt(selectedRow, 0);
-					producto.setCodigo(codigo);
-					producto = productoBusiness.findByCodigo(producto.getCodigo());
+					producto = productoBusiness.findByCodigo(codigo);
 				}
 
 			}
