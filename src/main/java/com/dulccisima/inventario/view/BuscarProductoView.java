@@ -152,7 +152,7 @@ public class BuscarProductoView {
 
 				if (e.getValueIsAdjusting()) {
 					int selectedRow = table.getSelectedRow();
-					Integer codigo = (Integer) table.getValueAt(selectedRow, 1);
+					Integer codigo = (Integer) table.getValueAt(selectedRow, 0);
 					producto.setCodigo(codigo);
 					producto = productoBusiness.findByCodigo(producto.getCodigo());
 				}
