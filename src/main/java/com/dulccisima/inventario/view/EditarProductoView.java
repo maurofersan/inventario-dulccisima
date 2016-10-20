@@ -16,7 +16,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class EditarProductoView {
-
+	
+	private static EditarProductoView instance;
 	protected JFrame frame;
 	private JTextField txtCodigo;
 	private JTextField txtNombre;
@@ -41,6 +42,13 @@ public class EditarProductoView {
 				}
 			}
 		});
+	}
+	
+	public static EditarProductoView getInstance() {
+		if (instance == null) {
+			return instance = new EditarProductoView();
+		}
+		return instance;
 	}
 
 	public EditarProductoView() {

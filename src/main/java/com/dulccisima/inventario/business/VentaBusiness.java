@@ -15,11 +15,14 @@ public class VentaBusiness {
 	private EmailBusiness emailBusiness = new EmailBusiness();
 
 	public boolean registrarVenta(Venta venta){
+		if (venta == null) {
+			return false;
+		}
 		//Registrar venta
 		ventaDao.createVenta(venta);
 		//Descontar Stock
 		for (VentaDetalle detalle : venta.getItems()) {
-			Producto producto = productoDao.findByCodigo(detalle.getProducto().getCodigo());
+			Producto producto = productoDao.findByCodigo(detalle.getProducto());
 			int nuevoStock = producto.getStock() - detalle.getCantidad();
 			producto.setStock(nuevoStock);
 			productoDao.update(producto);

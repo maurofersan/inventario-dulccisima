@@ -23,6 +23,12 @@ public class ProductoBusiness {
 		return productoDao.findByName(producto);
 	}
 	
+	public Producto findByCodigo(int codigo) {
+		Producto producto = new Producto();
+		producto.setCodigo(codigo);
+		return productoDao.findByCodigo(producto);
+	}
+	
 	public Producto update(Producto p) {
 		return productoDao.update(p);
 	}

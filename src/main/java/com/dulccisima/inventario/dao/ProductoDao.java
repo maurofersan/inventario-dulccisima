@@ -34,9 +34,7 @@ public class ProductoDao implements CrudDao<Producto> {
 	}
 	
 	@Override
-	public Producto findByCodigo(int codigo) {
-		Producto producto = new Producto();
-		producto.setCodigo(codigo);
+	public Producto findByCodigo(Producto producto) {
 		int index = DataBase.getProductos().indexOf(producto);
 		if (index == -1) {
 			return null;

@@ -82,7 +82,6 @@ public class InventarioView {
 		txtCodigo.setBounds(66, 56, 61, 20);
 		txtCodigo.setEditable(false);
 		panel.add(txtCodigo);
-		txtCodigo.setColumns(10);
 
 		JLabel lblNombre = new JLabel("Nombre: ");
 		lblNombre.setBounds(10, 22, 72, 14);
@@ -91,7 +90,6 @@ public class InventarioView {
 		txtNombre = new JTextField();
 		txtNombre.setBounds(73, 19, 146, 20);
 		panel.add(txtNombre);
-		txtNombre.setColumns(10);
 
 		JLabel lblPrecio = new JLabel("Precio: ");
 		lblPrecio.setBounds(154, 59, 46, 14);
@@ -101,7 +99,6 @@ public class InventarioView {
 		txtPrecio.setEditable(false);
 		txtPrecio.setBounds(210, 56, 86, 20);
 		panel.add(txtPrecio);
-		txtPrecio.setColumns(10);
 		
 		lblCategoria = new JLabel("Categoria:");
 		lblCategoria.setBounds(352, 59, 61, 14);
@@ -111,7 +108,6 @@ public class InventarioView {
 		txtCategoria.setEditable(false);
 		txtCategoria.setBounds(427, 56, 86, 20);
 		panel.add(txtCategoria);
-		txtCategoria.setColumns(10);
 
 		lblStock = new JLabel("Stock: ");
 		lblStock.setBounds(569, 59, 46, 14);
@@ -121,7 +117,7 @@ public class InventarioView {
 		txtStock.setEditable(false);
 		txtStock.setBounds(625, 56, 86, 20);
 		panel.add(txtStock);
-		txtStock.setColumns(10);
+		
 		// CREAR-----------------------------------------------------------------------------------------------------------
 		btnCreate = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/new.png")));
 		btnCreate.setToolTipText("Crear");
@@ -130,7 +126,7 @@ public class InventarioView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EditarProductoView view = new EditarProductoView();
+				EditarProductoView view = EditarProductoView.getInstance();
 				view.frame.setTitle("CREAR PRODUCTO");
 				view.setOnAccept(new SimpleCallback() {
 					@Override
@@ -191,7 +187,7 @@ public class InventarioView {
 				producto.setCategoria(txtCategoria.getText());
 				producto.setStock(Integer.parseInt(txtStock.getText()));	
 				
-				EditarProductoView view = new EditarProductoView();
+				EditarProductoView view = EditarProductoView.getInstance();
 				view.frame.setTitle("EDITAR PRODUCTO");
 				view.setProducto(producto);
 				view.cargarDatos();

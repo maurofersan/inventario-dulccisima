@@ -10,7 +10,7 @@ public interface CrudDao<T> {
 	
 	public List<T> findByName(T t);
 	
-	public T findByCodigo(int codigo);
+	public T findByCodigo(T t);
 
 	public T update(T t);
 	

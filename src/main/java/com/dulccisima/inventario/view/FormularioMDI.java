@@ -105,7 +105,8 @@ public class FormularioMDI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				VentaView ventaView = VentaView.getInstance();
+				ventaView.frame.setVisible(true);
 				
 			}
 		});
