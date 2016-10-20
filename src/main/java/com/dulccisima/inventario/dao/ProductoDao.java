@@ -57,7 +57,7 @@ public class ProductoDao implements CrudDao<Producto> {
 	}
 
 	private int generateCodigo() {
-		List<Producto> listaProductos = findAll();
+		List<Producto> listaProductos = DataBase.getProductos();
 		if (listaProductos.isEmpty()) {
 			return 1;
 		}

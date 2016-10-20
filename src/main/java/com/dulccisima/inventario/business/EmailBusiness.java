@@ -13,7 +13,7 @@ import com.dulccisima.inventario.model.EmailMessage;
 
 public class EmailBusiness {
 
-	private static final String USERNAME = "maurofersan92@gmail.com";
+	private static final String USERNAME = "dulccisima.canete@gmail.com";
 	private static final String PASSWORD = "fesaqwerasdf";
 	private Properties mailProperties;
 

@@ -4,13 +4,19 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import com.dulccisima.inventario.business.VentaBusiness;
 import com.dulccisima.inventario.model.Producto;
+import com.dulccisima.inventario.model.Venta;
+import com.dulccisima.inventario.model.VentaDetalle;
 import com.dulccisima.inventario.view.callback.SimpleCallback;
 
 import javax.swing.ImageIcon;
@@ -38,11 +44,14 @@ public class VentaView {
 	private JTextField txtIgv;
 	private JTextField txtTotal;
 	private Producto producto;
-
+	private List<VentaDetalle> items = new ArrayList<>();
+	
 	private static VentaView instance;
 	private static int contador;
 	private static BigDecimal suma = new BigDecimal(0);
 	private JButton btnRegistrar;
+	
+	private VentaBusiness ventaBusiness = new VentaBusiness();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -176,6 +185,12 @@ public class VentaView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				VentaDetalle ventaDetalle = new VentaDetalle();
+				ventaDetalle.setProducto(producto);
+				ventaDetalle.setCantidad(Integer.parseInt(txtCantidad.getText()));
+				items.add(ventaDetalle);
+				
 				String codigo = txtCodigo.getText();
 				String nombre = txtNombre.getText();
 				BigDecimal precio = new BigDecimal(txtPrecio.getText());
@@ -207,17 +222,29 @@ public class VentaView {
 			}
 		});
 		panel.add(btnEditar);
-
+		//ELIMINAR------------------------------------------------------------------------------------------
 		btnDelete = new JButton();
 		btnDelete.setToolTipText("Eliminar");
 		btnDelete.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/Shopping-remove.png")));
 		btnDelete.setBounds(358, 96, 46, 28);
 		panel.add(btnDelete);
-
+		//REGISTRAR VENTA-------------------------------------------------------------------------------------
 		btnRegistrar = new JButton("Registrar");
 		btnRegistrar.setBounds(453, 396, 89, 23);
+		btnRegistrar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				Venta venta = new Venta();
+				venta.setFecha(new Date());
+				venta.setItems(items);
+				ventaBusiness.registrarVenta(venta);
+				
+			}
+		});
 		panel.add(btnRegistrar);
-
+		//----------------------------------------------------------------------------------------------------
 		Object[] columnNames = { "Codigo", "Nombre", "Precio", "Cantidad", "Subtotal" };
 		tableModel = new DefaultTableModel(columnNames, 10);
 

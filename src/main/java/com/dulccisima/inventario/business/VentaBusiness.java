@@ -30,9 +30,11 @@ public class VentaBusiness {
 			if (nuevoStock == 0) {
 				//Enviar Email
 				EmailMessage message = new EmailMessageBuilder()
-						.setFrom("maurofersan92@gmail.com")
+						.setFrom("dulccisima.canete@gmail.com")
 						.setSubject("Producto sin Stock")
 						.addTo("mauro_9_2@hotmail.com")
+						.addTo("hanshuari@gmail.com")
+						.addTo("ingenieroluistorres.gb@gmail.com")
 						.setText("Revisa el stock del producto " + producto.getNombre())
 						.build();
 				emailBusiness.sendEmail(message);
