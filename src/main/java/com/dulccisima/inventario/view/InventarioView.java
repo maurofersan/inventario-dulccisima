@@ -24,7 +24,7 @@ import com.dulccisima.inventario.view.callback.SimpleCallback;
 public class InventarioView {
 
 	private static InventarioView instance;
-	
+
 	protected JFrame frame;
 	private JPanel panel;
 	private JTextField txtCodigo;
@@ -45,9 +45,9 @@ public class InventarioView {
 	private JButton btnDelete;
 
 	private ProductoBusiness productoBusiness = new ProductoBusiness();
-	
+
 	public static InventarioView getInstance() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new InventarioView();
 		}
 		return instance;
@@ -99,11 +99,11 @@ public class InventarioView {
 		txtPrecio.setEditable(false);
 		txtPrecio.setBounds(210, 56, 86, 20);
 		panel.add(txtPrecio);
-		
+
 		lblCategoria = new JLabel("Categoria:");
 		lblCategoria.setBounds(352, 59, 61, 14);
 		panel.add(lblCategoria);
-		
+
 		txtCategoria = new JTextField();
 		txtCategoria.setEditable(false);
 		txtCategoria.setBounds(427, 56, 86, 20);
@@ -117,7 +117,7 @@ public class InventarioView {
 		txtStock.setEditable(false);
 		txtStock.setBounds(625, 56, 86, 20);
 		panel.add(txtStock);
-		
+
 		// CREAR-----------------------------------------------------------------------------------------------------------
 		btnCreate = new JButton(new ImageIcon(this.getClass().getClassLoader().getResource("img/new.png")));
 		btnCreate.setToolTipText("Crear");
@@ -128,13 +128,14 @@ public class InventarioView {
 			public void actionPerformed(ActionEvent e) {
 				EditarProductoView view = EditarProductoView.getInstance();
 				view.frame.setTitle("CREAR PRODUCTO");
+				view.limpiarDatos();
 				view.setOnAccept(new SimpleCallback() {
 					@Override
 					public void execute() {
-						
+
 						limpiarDatos();
 						cargarProductos();
-						
+
 					}
 				});
 				view.frame.setVisible(true);
@@ -151,7 +152,8 @@ public class InventarioView {
 			public void actionPerformed(ActionEvent e) {
 				List<Producto> productosFound = productoBusiness.findByName(txtNombre.getText());
 				if (productosFound.isEmpty()) {
-					JOptionPane.showMessageDialog(frame, "No se encontraron productos", "Warning", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "No se encontraron productos", "Warning",
+							JOptionPane.WARNING_MESSAGE);
 				}
 				limpiarDatos();
 				cargarProductosFound(productosFound);
@@ -180,25 +182,30 @@ public class InventarioView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Producto producto = new Producto();
-				producto.setCodigo(Integer.parseInt(txtCodigo.getText()));
-				producto.setNombre(txtNombre.getText());
-				producto.setPrecio(Double.parseDouble(txtPrecio.getText()));
-				producto.setCategoria(txtCategoria.getText());
-				producto.setStock(Integer.parseInt(txtStock.getText()));	
-				
-				EditarProductoView view = EditarProductoView.getInstance();
-				view.frame.setTitle("EDITAR PRODUCTO");
-				view.setProducto(producto);
-				view.cargarDatos();
-				view.setOnAccept(new SimpleCallback() {
-					@Override
-					public void execute() {
-						limpiarDatos();
-						cargarProductos();
-					}
-				});
-				view.frame.setVisible(true);
+				Producto producto;
+				try {
+					producto = new Producto();
+					producto.setCodigo(Integer.parseInt(txtCodigo.getText()));
+					producto.setNombre(txtNombre.getText());
+					producto.setPrecio(Double.parseDouble(txtPrecio.getText()));
+					producto.setCategoria(txtCategoria.getText());
+					producto.setStock(Integer.parseInt(txtStock.getText()));
+
+					EditarProductoView view = EditarProductoView.getInstance();
+					view.frame.setTitle("EDITAR PRODUCTO");
+					view.setProducto(producto);
+					view.cargarDatos();
+					view.setOnAccept(new SimpleCallback() {
+						@Override
+						public void execute() {
+							limpiarDatos();
+							cargarProductos();
+						}
+					});
+					view.frame.setVisible(true);
+				} catch (NumberFormatException e1) {
+					JOptionPane.showMessageDialog(frame, "Seleccione un producto", "Warning",JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		panel.add(btnUpdate);
@@ -210,8 +217,9 @@ public class InventarioView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = JOptionPane.showConfirmDialog(frame, "Desea eliminar este producto", "Warning", JOptionPane.WARNING_MESSAGE);
-				if(value == JOptionPane.CANCEL_OPTION){
+				int value = JOptionPane.showConfirmDialog(frame, "Desea eliminar este producto", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				if (value == JOptionPane.CANCEL_OPTION) {
 					return;
 				}
 				productoBusiness.delate(Integer.parseInt(txtCodigo.getText()));
@@ -222,7 +230,7 @@ public class InventarioView {
 		});
 		panel.add(btnDelete);
 		// -------------------------------------------------------------------------------------------------------------
-		Object[] columnNames = new Object[] { "Codigo", "Nombre", "Precio","Categoria", "Stock" };
+		Object[] columnNames = new Object[] { "Codigo", "Nombre", "Precio", "Categoria", "Stock" };
 
 		boolean canEdit = false;
 		tableModel = new DefaultTableModel(columnNames, 0) {
@@ -286,8 +294,8 @@ public class InventarioView {
 		Object[] rowProducto;
 
 		for (Producto producto : productos) {
-			rowProducto = new Object[] { producto.getCodigo(), producto.getNombre(), producto.getPrecio(),producto.getCategoria(),
-					producto.getStock() };
+			rowProducto = new Object[] { producto.getCodigo(), producto.getNombre(), producto.getPrecio(),
+					producto.getCategoria(), producto.getStock() };
 
 			tableModel.addRow(rowProducto);
 		}
@@ -296,11 +304,11 @@ public class InventarioView {
 	private void cargarProductosFound(List<Producto> productos) {
 		Object[] rowProducto;
 		for (Producto producto : productos) {
-			rowProducto = new Object[] { producto.getCodigo(), producto.getNombre(), producto.getPrecio(), producto.getCategoria(),
-					producto.getStock() };
+			rowProducto = new Object[] { producto.getCodigo(), producto.getNombre(), producto.getPrecio(),
+					producto.getCategoria(), producto.getStock() };
 			tableModel.addRow(rowProducto);
 
 		}
 	}
-	
+
 }

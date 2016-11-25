@@ -137,7 +137,7 @@ public class EditarProductoView {
 			if (onAccept != null) {
 				onAccept.execute();
 			}
-
+	
 			frame.dispose();
 		});
 
@@ -146,7 +146,8 @@ public class EditarProductoView {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/Cancel.png")));
 		btnCancelar.setBounds(221, 344, 123, 33);
-		btnCancelar.addActionListener(e -> {
+		btnCancelar.addActionListener(e -> {;
+		
 			frame.dispose();
 		});
 		frame.getContentPane().add(btnCancelar);
@@ -181,6 +182,15 @@ public class EditarProductoView {
 		txtPrecio.setText(String.valueOf(producto.getPrecio()));
 		txtCategoria.setText(producto.getCategoria());
 		txtStock.setText(String.valueOf(producto.getStock()));
+	}
+	
+	public void limpiarDatos() {
+		setProducto(null);
+		txtCodigo.setText("");
+		txtNombre.setText("");
+		txtPrecio.setText("");
+		txtCategoria.setText("");
+		txtStock.setText("");
 	}
 
 	public void setOnAccept(SimpleCallback onAccept) {

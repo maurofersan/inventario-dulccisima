@@ -13,15 +13,15 @@ import com.dulccisima.inventario.model.EmailMessage;
 
 public class EmailBusiness {
 
-	private static final String USERNAME = "dulccisima.canete@gmail.com";
-	private static final String PASSWORD = "fesaqwerasdf";
+	private static final String USERNAME = "dulccisima.cannete@gmail.com";//dulccisima.cannete@gmail.com
+	private static final String PASSWORD = "fesaqwerasdf";//fesaqwerasdf
 	private Properties mailProperties;
 
 	public EmailBusiness() {
 		mailProperties = new Properties();
 		mailProperties.setProperty("mail.smtp.host", "smtp.gmail.com");
 		mailProperties.setProperty("mail.smtp.starttls.enable", "true");
-		mailProperties.setProperty("mail.smtp.port", "587");
+		mailProperties.setProperty("mail.smtp.port", "587");//587
 		mailProperties.setProperty("mail.smtp.auth", "true");
 		mailProperties.setProperty("mail.transport.protocol", "smtp");
 	}

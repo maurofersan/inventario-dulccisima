@@ -52,8 +52,8 @@ public class ProductoDao implements CrudDao<Producto> {
 	}
 
 	@Override
-	public boolean delete(Producto p) {
-		return DataBase.getProductos().remove(p);
+	public boolean delete(Producto producto) {
+		return DataBase.getProductos().remove(producto);
 	}
 
 	private int generateCodigo() {

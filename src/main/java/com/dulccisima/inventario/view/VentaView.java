@@ -11,6 +11,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.dulccisima.inventario.business.VentaBusiness;
@@ -44,13 +46,15 @@ public class VentaView {
 	private JTextField txtIgv;
 	private JTextField txtTotal;
 	private Producto producto;
+	private String[] detalles;
+	private int selectedRow;
 	private List<VentaDetalle> items = new ArrayList<>();
-	
+
 	private static VentaView instance;
 	private static int contador;
 	private static BigDecimal suma = new BigDecimal(0);
 	private JButton btnRegistrar;
-	
+
 	private VentaBusiness ventaBusiness = new VentaBusiness();
 
 	public static void main(String[] args) {
@@ -185,12 +189,12 @@ public class VentaView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				VentaDetalle ventaDetalle = new VentaDetalle();
 				ventaDetalle.setProducto(producto);
 				ventaDetalle.setCantidad(Integer.parseInt(txtCantidad.getText()));
 				items.add(ventaDetalle);
-				
+
 				String codigo = txtCodigo.getText();
 				String nombre = txtNombre.getText();
 				BigDecimal precio = new BigDecimal(txtPrecio.getText());
@@ -202,6 +206,8 @@ public class VentaView {
 				BigDecimal total = suma.add(igv);
 				limpiarDatos();
 				Object[] rowProducto = new Object[] { codigo, nombre, precio, cantidad, subtotal };
+				igv = igv.setScale(2, BigDecimal.ROUND_HALF_UP);
+				total = total.setScale(2, BigDecimal.ROUND_HALF_UP);
 				txtIgv.setText(String.valueOf(igv));
 				txtTotal.setText(String.valueOf(total));
 				tableModel.addRow(rowProducto);
@@ -218,37 +224,78 @@ public class VentaView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				EditarVentaView view = EditarVentaView.getInstance();
+				view.setDetalle(detalles);
+				view.cargarDatos();
+				view.setOnAccept(new SimpleCallback() {
+
+					@Override
+					public void execute() {
+						tblVentas.setValueAt(view.getDetalles()[2], selectedRow, 3);
+					}
+				});
 				view.frame.setVisible(true);
 			}
 		});
 		panel.add(btnEditar);
-		//ELIMINAR------------------------------------------------------------------------------------------
+		// ELIMINAR------------------------------------------------------------------------------------------
 		btnDelete = new JButton();
 		btnDelete.setToolTipText("Eliminar");
 		btnDelete.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/Shopping-remove.png")));
 		btnDelete.setBounds(358, 96, 46, 28);
-		panel.add(btnDelete);
-		//REGISTRAR VENTA-------------------------------------------------------------------------------------
-		btnRegistrar = new JButton("Registrar");
-		btnRegistrar.setBounds(453, 396, 89, 23);
-		btnRegistrar.addActionListener(new ActionListener() {
+		btnDelete.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+			}
+		});
+		panel.add(btnDelete);
+		// REGISTRAR
+		// VENTA-------------------------------------------------------------------------------------
+		btnRegistrar = new JButton("Registrar");
+		btnRegistrar.setBounds(453, 396, 89, 23);
+		btnRegistrar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
 				Venta venta = new Venta();
 				venta.setFecha(new Date());
 				venta.setItems(items);
 				ventaBusiness.registrarVenta(venta);
-				
+
 			}
 		});
 		panel.add(btnRegistrar);
-		//----------------------------------------------------------------------------------------------------
+		// ----------------------------------------------------------------------------------------------------
 		Object[] columnNames = { "Codigo", "Nombre", "Precio", "Cantidad", "Subtotal" };
-		tableModel = new DefaultTableModel(columnNames, 10);
+		tableModel = new DefaultTableModel(columnNames, 10) {
+
+			private static final long serialVersionUID = 1L;
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+
+		};
 
 		tblVentas = new JTable(tableModel);
+		tblVentas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (e.getValueIsAdjusting()) {
+					selectedRow = tblVentas.getSelectedRow();
+					String codigo = (String) tblVentas.getValueAt(selectedRow, 0);
+					String nombre = (String) tblVentas.getValueAt(selectedRow, 1);
+					tblVentas.getValueAt(selectedRow, 2);
+					String cantidad = tblVentas.getValueAt(selectedRow, 3).toString();
+					tblVentas.getValueAt(selectedRow, 4);
+					detalles = new String[] { codigo, nombre, cantidad };
+				}
+
+			}
+		});
 
 		scrollPane = new JScrollPane(tblVentas);
 		scrollPane.setBounds(10, 148, 562, 170);
